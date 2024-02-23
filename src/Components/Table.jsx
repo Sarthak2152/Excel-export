@@ -108,6 +108,30 @@ function Table() {
       horizontal: "center",
     };
 
+    const ageColumn = worksheet.getColumn("Age");
+    const ageValues = ageColumn.values.slice(3);
+    console.log(ageColumn);
+    console.log(ageValues);
+    const totalAge = ageValues.reduce((acc, age) => acc + Number(age), 0);
+    const postalColumn = worksheet.getColumn("Postal Code");
+    const postalValues = postalColumn.values.slice(3);
+    const totalPostal = postalValues.reduce(
+      (acc, postal) => acc + Number(postal),
+      0,
+    );
+
+    worksheet.addRow(
+      tableData.map((col) => {
+        if (col === "Age") {
+          return `${totalAge}`;
+        } else if (col === "Postal Code") {
+          return `${totalPostal}`;
+        } else {
+          return "";
+        }
+      }),
+    );
+
     // Generate Excel buffer
     const buffer = await workbook.xlsx.writeBuffer();
 
